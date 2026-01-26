@@ -1,6 +1,7 @@
 package edu.ucsd.spendingtracker.model;
 
 import java.util.List;
+
 import edu.ucsd.spendingtracker.repository.ExpenseRepository;
 
 public class Model {
@@ -12,6 +13,10 @@ public class Model {
 
     public void addExpense(Expense e) {
         repository.addExpense(e);
+    }
+
+    public void deleteExpense(int id) {
+        repository.deleteExpense(id);
     }
 
     public List<Expense> getExpenses() {
