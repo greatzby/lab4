@@ -9,9 +9,23 @@ public class SpendingPresenter extends AbstractPresenter<SpendingView> {
 
     public SpendingPresenter(Model model, SpendingView view) {
         super(model, view);
+
         this.view.getSummaryButton().setOnAction(e -> {
-            if (onShowSummary != null)
+            if (onShowSummary != null) {
                 onShowSummary.run();
+            }
+        });
+
+        this.view.setOnDelete(id -> {
+            this.model.deleteExpense(id); 
+            updateView();               
+        });
+
+        this.view.getOpenModalButton().setOnAction(e -> {
+            this.view.showAddExpenseModal(newExpense -> {
+                this.model.addExpense(newExpense); 
+                updateView();                      
+            });
         });
 
         updateView();
@@ -26,12 +40,18 @@ public class SpendingPresenter extends AbstractPresenter<SpendingView> {
         return "Expenses";
     }
 
+    @Override
     public void updateView() {
-        int i = 1;
-        for (Expense e : model.getExpenses()) {
-            view.addExpenseRow(i++, e.getName(), e.getCategory().name(),
-                    e.getCategory().color, e.getAmount());
+        this.view.clearList();
+
+        for (Expense e : this.model.getExpenses()) {
+            this.view.addExpenseRow(
+                    e.getId(),
+                    e.getName(),
+                    e.getCategory().name(),
+                    e.getCategory().color,
+                    e.getAmount()
+            );
         }
     }
 }
-
